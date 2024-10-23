@@ -12,12 +12,6 @@ sudo apt install -y apache2 mariadb-server php libapache2-mod-php
 echo "Installing UFW for firewall management..."
 sudo apt install -y ufw
 
-# Configure the firewall using UFW
-echo "Configuring the firewall with UFW..."
-sudo ufw allow OpenSSH  # Allow SSH
-sudo ufw allow 'Apache Full'  # Allow HTTP and HTTPS
-sudo ufw enable  # Enable UFW
-
 # Add a new user if it doesn't exist
 if id "adminuser" &>/dev/null; then
     echo "User 'adminuser' already exists."
