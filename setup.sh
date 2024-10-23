@@ -66,3 +66,9 @@ sudo dpkg-reconfigure --priority=low unattended-upgrades
 
 echo "Setup complete!"
 
+# Configure the firewall using iptables
+echo "Configuring the firewall with iptables..."
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT  # Allow HTTP
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT # Allow HTTPS
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT  # Allow SSH
+sudo iptables -A INPUT -j DROP  # Block everything else
