@@ -17,6 +17,14 @@ This project automates the setup of a basic web server on Kali Linux, including 
 ## Requirements
 - A system running Kali Linux.
 - sudo privileges.
+## Security Audit with Lynis
+
+After setting up your server, you can perform a security audit using Lynis.
+
+1. **Run the Lynis Audit**:
+   To perform a security audit on your system, run the following command:
+   ```bash
+   sudo lynis audit system
 
 ## Usage
 1. Clone the repository to your local machine:
