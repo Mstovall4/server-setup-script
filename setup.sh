@@ -8,9 +8,6 @@ sudo apt update && sudo apt upgrade -y
 echo "Installing Apache, MariaDB, and PHP..."
 sudo apt install -y apache2 mariadb-server php libapache2-mod-php
 
-# Install UFW for firewall management
-echo "Installing UFW for firewall management..."
-sudo apt install -y ufw
 
 # Add a new user if it doesn't exist
 if id "adminuser" &>/dev/null; then
