@@ -8,11 +8,15 @@ sudo apt update && sudo apt upgrade -y
 echo "Installing Apache, MariaDB, and PHP..."
 sudo apt install -y apache2 mariadb-server php libapache2-mod-php
 
-# Configure the firewall using iptables (since Kali may not have ufw)
-echo "Configuring the firewall with iptables..."
-sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT  # Allow HTTP
-sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT  # Allow SSH
-sudo iptables -A INPUT -j DROP  # Block everything else
+# Install UFW for firewall management
+echo "Installing UFW for firewall management..."
+sudo apt install -y ufw
+
+# Configure the firewall using UFW
+echo "Configuring the firewall with UFW..."
+sudo ufw allow OpenSSH  # Allow SSH
+sudo ufw allow 'Apache Full'  # Allow HTTP and HTTPS
+sudo ufw enable  # Enable UFW
 
 # Add a new user if it doesn't exist
 if id "adminuser" &>/dev/null; then
@@ -34,6 +38,22 @@ sudo chmod 600 /home/adminuser/.ssh/authorized_keys
 echo "Installing and configuring fail2ban..."
 sudo apt install -y fail2ban
 
+# Install Certbot for SSL/TLS certificate
+echo "Installing Certbot for SSL/TLS certificate management..."
+sudo apt install -y certbot python3-certbot-apache
+
+# Obtain an SSL certificate
+read -p "Enter your domain name (e.g., yourdomain.com): " domain
+sudo certbot --apache -d "$domain" -d "www.$domain"
+
+# Set up automatic renewal for the certificate
+echo "Setting up automatic renewal for the SSL certificate..."
+sudo certbot renew --dry-run
+
+# Install Lynis for security auditing
+echo "Installing Lynis for security auditing..."
+sudo apt install -y lynis
+
 # Enable Apache to start on boot and start the service
 echo "Starting and enabling Apache..."
 sudo systemctl enable apache2
@@ -44,4 +64,5 @@ echo "Enabling automatic updates..."
 sudo apt install -y unattended-upgrades
 sudo dpkg-reconfigure --priority=low unattended-upgrades
 
-echo "Server setup completed!"
+echo "Setup complete!"
+
