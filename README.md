@@ -8,7 +8,7 @@ Automated server setup script for installing and configuring essential software 
 This project automates the setup of a basic web server on Kali Linux, including user management, security hardening, and firewall configuration.
 
 ## Features
-- Installs and configures Apache, MySQL, and PHP.
+- Installs and configures Apache, MariaDB, and PHP.
 - Configures iptables firewall to allow HTTP (80) and SSH (22) traffic.
 - Adds a new user (`adminuser`) and sets up SSH key-based authentication.
 - Installs and configures fail2ban for security.
