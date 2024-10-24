@@ -9,6 +9,9 @@ This project automates the setup of a basic web server on Kali Linux, including 
 - Adds a new user (`adminuser`) and sets up SSH key-based authentication.
 - Installs and configures fail2ban for security.
 - Enables automatic updates.
+- Sets up DuckDNS for dynamic DNS updates.
+- Configures SSL/TLS using Let's Encrypt.
+- Integrates ngrok for secure access to local servers.
 
 ## Requirements
 - A system running Kali Linux.
@@ -22,4 +25,5 @@ After setting up your server, you can perform a security audit using Lynis.
    To perform a security audit on your system, run the following command:
    ```bash
    sudo lynis audit system
+
 
