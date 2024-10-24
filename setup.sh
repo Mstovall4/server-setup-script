@@ -1,4 +1,12 @@
 #!/bin/bash
+set -e  # Exit on error
+
+# Check network connectivity
+echo "Checking network connectivity..."
+if ! ping -c 1 google.com &> /dev/null; then
+    echo "Network is not reachable. Please check your connection."
+    exit 1
+fi
 
 # Update and upgrade the system
 echo "Updating and upgrading the system..."
@@ -7,7 +15,6 @@ sudo apt update && sudo apt upgrade -y
 # Install required packages
 echo "Installing Apache, MariaDB, and PHP..."
 sudo apt install -y apache2 mariadb-server php libapache2-mod-php
-
 
 # Add a new user if it doesn't exist
 if id "adminuser" &>/dev/null; then
@@ -35,6 +42,10 @@ sudo apt install -y certbot python3-certbot-apache
 
 # Obtain an SSL certificate
 read -p "Enter your domain name (e.g., yourdomain.com): " domain
+if [ -z "$domain" ]; then
+    echo "Domain name cannot be empty."
+    exit 1
+fi
 sudo certbot --apache -d "$domain" -d "www.$domain"
 
 # Set up automatic renewal for the certificate
@@ -55,11 +66,18 @@ echo "Enabling automatic updates..."
 sudo apt install -y unattended-upgrades
 sudo dpkg-reconfigure --priority=low unattended-upgrades
 
-echo "Setup complete!"
-
 # Configure the firewall using iptables
 echo "Configuring the firewall with iptables..."
 sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT  # Allow HTTP
 sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT # Allow HTTPS
 sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT  # Allow SSH
 sudo iptables -A INPUT -j DROP  # Block everything else
+
+# Save iptables rules
+sudo iptables-save | sudo tee /etc/iptables/rules.v4
+
+# Clean up unused packages
+sudo apt autoremove -y
+
+echo "Setup complete!"
+
